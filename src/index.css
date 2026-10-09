@@ -1,0 +1,145 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ————————————————————————— 基础 ————————————————————————— */
+
+:root {
+  color-scheme: light;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  font-family: "Noto Serif SC", "Source Han Serif SC", "Songti SC", "STSong",
+    "SimSun", Georgia, "Times New Roman", serif;
+  color: #23201a;
+  background-color: #faf6ee;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+  /* 轻微纸张纹理：暖色渐变 + 极淡噪点 */
+  background-image: radial-gradient(
+      ellipse at 50% 0%,
+      rgba(255, 252, 244, 0.9) 0%,
+      rgba(250, 246, 238, 0) 55%
+    ),
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='120' height='120' filter='url(%23n)' opacity='0.35'/%3E%3C/svg%3E");
+  background-blend-mode: normal, multiply;
+}
+
+/* 纸张噪点叠加层 */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.018;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23g)'/%3E%3C/svg%3E");
+  z-index: 0;
+}
+
+::selection {
+  background: rgba(138, 58, 43, 0.16);
+  color: #23201a;
+}
+
+/* 细窄、克制的滚动条 */
+::-webkit-scrollbar {
+  width: 9px;
+  height: 9px;
+}
+::-webkit-scrollbar-thumb {
+  background: #ddd2bb;
+  border-radius: 99px;
+  border: 2px solid #faf6ee;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #cbbfa4;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+/* ————————————————————————— 通用工具类 ————————————————————————— */
+
+@layer components {
+  .hairline {
+    background-image: linear-gradient(
+      to right,
+      transparent,
+      #e6dcc7 18%,
+      #e6dcc7 82%,
+      transparent
+    );
+    height: 1px;
+  }
+
+  .btn-primary {
+    @apply inline-flex items-center justify-center gap-2 rounded-sm border px-8 py-3 text-base tracking-[0.3em] transition-all duration-300;
+    color: #faf6ee;
+    background-color: #23201a;
+    border-color: #23201a;
+  }
+  .btn-primary:hover {
+    background-color: #8a3a2b;
+    border-color: #8a3a2b;
+    transform: translateY(-1px);
+  }
+  .btn-primary:active {
+    transform: translateY(0);
+  }
+
+  .btn-ghost {
+    @apply inline-flex items-center justify-center gap-2 rounded-sm border px-6 py-2.5 text-sm tracking-[0.25em] transition-all duration-300;
+    color: #3a352c;
+    background-color: transparent;
+    border-color: #d8ccb4;
+  }
+  .btn-ghost:hover {
+    border-color: #23201a;
+    color: #23201a;
+    transform: translateY(-1px);
+  }
+
+  .btn-ghost-plain {
+    @apply inline-flex items-center justify-center gap-1.5 rounded-sm px-4 py-2 text-sm tracking-[0.18em] transition-colors duration-200;
+    color: #7a7061;
+  }
+  .btn-ghost-plain:hover {
+    color: #8a3a2b;
+  }
+}
+
+/* 文本渐现（逐行淡入） */
+@keyframes lineReveal {
+  from {
+    opacity: 0;
+    transform: translateY(0.5em);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.reveal-line {
+  opacity: 0;
+  animation: lineReveal 0.85s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+/* 尊重减少动态偏好 */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+}
